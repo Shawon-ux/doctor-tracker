@@ -1,0 +1,27 @@
+{
+  "name": "doctor-tracker",
+  "private": true,
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n api,web -c blue,green \"npm run dev -w server\" \"npm run dev -w client\"",
+    "seed": "npm run seed -w server",
+    "lint": "npm run lint --workspaces",
+    "typecheck": "npm run typecheck --workspaces",
+    "test": "npm run test --workspaces --if-present",
+    "build": "npm run build --workspaces",
+    "ci": "npm run lint && npm run typecheck && npm run test && npm run build",
+    "secret": "node -e \"console.log(require('crypto').randomBytes(48).toString('base64'))\"",
+    "start": "concurrently -k -n api,web -c blue,green \"npm run start -w server\" \"npm run start -w client\"",
+    "create-user": "npm run create-user -w server --",
+    "explain": "npm run explain -w server"
+  },
+  "engines": {
+    "node": ">=20.12"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.5"
+  }
+}

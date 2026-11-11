@@ -1,0 +1,191 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  --canvas: #edf0ee;
+  --surface: #ffffff;
+  --surface-2: #f5f7f6;
+  --ink: #13222b;
+  --muted: #5b6a71;
+  --faint: #606e73;
+  --line: #d5dcd9;
+  --line-strong: #b9c4c0;
+  --pine: #1f5a44;
+  --pine-ink: #ffffff;
+  --pine-soft: #dfeae2;
+  --series: #2d6a9f;
+  --series-soft: #e2ecf5;
+  --danger: #b42318;
+  --danger-soft: #fbe5e2;
+
+  --c-critical: #b42318;
+  --c-serious: #c8680c;
+  --c-stable: #4c6e91;
+  --c-recovering: #3c8a5f;
+  --c-released: #93a39d;
+
+  --focus: #2d6a9f;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --canvas: #0e1517;
+    --surface: #152024;
+    --surface-2: #1a272b;
+    --ink: #e3eae7;
+    --muted: #9aa9a6;
+    --faint: #8d9c99;
+    --line: #26363a;
+    --line-strong: #37494d;
+    --pine: #8cc4a2;
+    --pine-ink: #0b1a17;
+    --pine-soft: #1d3527;
+    --series: #7db3e0;
+    --series-soft: #1d3346;
+    --danger: #f2796b;
+    --danger-soft: #3d1f1c;
+    --c-critical: #f2796b;
+    --c-serious: #eba154;
+    --c-stable: #8fb0d2;
+    --c-recovering: #79c294;
+    --c-released: #6f817b;
+    --focus: #7db3e0;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --canvas: #0e1517;
+  --surface: #152024;
+  --surface-2: #1a272b;
+  --ink: #e3eae7;
+  --muted: #9aa9a6;
+  --faint: #8d9c99;
+  --line: #26363a;
+  --line-strong: #37494d;
+  --pine: #8cc4a2;
+  --pine-ink: #0b1a17;
+  --pine-soft: #1d3527;
+  --series: #7db3e0;
+  --series-soft: #1d3346;
+  --danger: #f2796b;
+  --danger-soft: #3d1f1c;
+  --c-critical: #f2796b;
+  --c-serious: #eba154;
+  --c-stable: #8fb0d2;
+  --c-recovering: #79c294;
+  --c-released: #6f817b;
+  --focus: #7db3e0;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-pine: var(--pine);
+  --color-pine-ink: var(--pine-ink);
+  --color-pine-soft: var(--pine-soft);
+  --color-series: var(--series);
+  --color-series-soft: var(--series-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --font-sans: var(--font-onest), ui-sans-serif, system-ui, sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.75rem;
+  --text-2xl: 2.5rem;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* In the base layer so a component's outline-none utility can override it. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+}
+
+/* Signature: the headline KPI sits on faint chart-recorder paper. */
+.recorder-paper {
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 16px 16px;
+  background-position: -1px -1px;
+  opacity: 0.35;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.6;
+  cursor: pointer;
+}
+:root[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+@keyframes fade {
+  from { opacity: 0; }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+}
+
+.theme-sun { display: none; }
+:root[data-theme="dark"] .theme-sun { display: block; }
+:root[data-theme="dark"] .theme-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-sun { display: block; }
+  :root:not([data-theme="light"]) .theme-moon { display: none; }
+}
+
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(6px); }
+}
+@keyframes nav-progress {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(300%); }
+}
+
+/* Edge adds its own reveal and clear buttons to inputs; the app provides its own. */
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}

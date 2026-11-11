@@ -1,0 +1,34 @@
+# One-command local stack: docker compose up --build, then
+# docker compose run --rm api node server/dist/scripts/seed.js
+services:
+  mongo:
+    image: mongo:7
+    volumes: [mongo-data:/data/db]
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      retries: 10
+
+  api:
+    build: { context: ., dockerfile: server/Dockerfile }
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/doctor-tracker
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env (32+ chars)}
+      CLIENT_ORIGIN: http://localhost:3000
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@doctortracker.dev}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-ChangeMe!2026}
+    depends_on:
+      mongo: { condition: service_healthy }
+
+  web:
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+      args: { API_URL: "http://api:4000" }
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+    ports: ["3000:3000"]
+    depends_on: [api]
+
+volumes:
+  mongo-data:
