@@ -33,3 +33,9 @@ export const patientSchema = z.object({
     .refine((v) => v <= toDateInput(new Date()), "Admission date cannot be in the future"),
   doctor: z.string().min(1, "Choose a doctor").optional(),
 });
+
+export const adminSchema = z.object({
+  name,
+  email: z.email("Enter a valid email"),
+  password: z.string().min(10, "At least 10 characters").max(200),
+});

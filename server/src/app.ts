@@ -9,6 +9,7 @@ import { requireAuth, writeRequiresAdmin } from './middleware/auth.js';
 import { csrfGuard } from './middleware/csrf.js';
 import { errorHandler, notFoundHandler } from './middleware/error.js';
 import { authRouter } from './modules/auth/auth.routes.js';
+import { adminRouter } from './modules/admins/admin.routes.js';
 import { doctorRouter } from './modules/doctors/doctor.routes.js';
 import { patientRouter } from './modules/patients/patient.routes.js';
 import { statsRouter } from './modules/stats/stats.routes.js';
@@ -37,6 +38,7 @@ export function createApp() {
   api.use(csrfGuard);
   api.use('/auth', authRouter);
   api.use(requireAuth, writeRequiresAdmin);
+  api.use('/admins', adminRouter);
   api.use('/doctors', doctorRouter);
   api.use('/patients', patientRouter);
   api.use('/stats', statsRouter);

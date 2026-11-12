@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutGrid, LogOut, Search, Stethoscope, Users } from "lucide-react";
+import { LayoutGrid, LogOut, Search, Stethoscope, UserPlus, Users } from "lucide-react";
 import { useCallback, useState, type ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import { useLogout, useMe } from "@/hooks/queries";
@@ -72,6 +72,19 @@ export function AppShell({ children }: { children: ReactNode }) {
           })}
         </nav>
         <div className="mt-auto border-t border-line p-3">
+          {me?.role === "admin" && (
+            <Link
+              href="/admins"
+              aria-current={isActive(path, "/admins") ? "page" : undefined}
+              className={cn(
+                "mb-2 flex items-center gap-3 rounded-lg px-3 py-2 text-base",
+                isActive(path, "/admins") ? "bg-pine-soft font-medium text-ink" : "text-muted hover:bg-surface-2 hover:text-ink",
+              )}
+            >
+              <UserPlus size={18} strokeWidth={isActive(path, "/admins") ? 2.2 : 1.8} />
+              Add Admin
+            </Link>
+          )}
           <div className="flex items-center gap-2.5 rounded-lg px-2 py-2">
             <span className="flex size-8 items-center justify-center rounded-full bg-surface-2 text-xs font-semibold text-muted">
               {me ? initials(me.name) : ""}
@@ -109,6 +122,11 @@ export function AppShell({ children }: { children: ReactNode }) {
           <button onClick={() => setSearching(true)} aria-label="Search" className="inline-flex size-9 items-center justify-center rounded-lg text-muted">
             <Search size={18} />
           </button>
+          {me?.role === "admin" && (
+            <Link href="/admins" aria-label="Add Admin" className="inline-flex size-9 items-center justify-center rounded-lg text-muted">
+              <UserPlus size={18} />
+            </Link>
+          )}
           <ThemeToggle className="inline-flex size-9 items-center justify-center rounded-lg text-muted" />
           <button onClick={() => logout.mutate()} aria-label="Sign Out" className="inline-flex size-9 items-center justify-center rounded-lg text-muted">
             <LogOut size={18} />

@@ -6,6 +6,9 @@ export type Gender = (typeof GENDERS)[number];
 
 export type User = { id: string; name: string; email: string; role: "admin" | "viewer" };
 
+export type AdminUser = { id: string; name: string; email: string; createdAt: string; lastLoginAt: string | null };
+export type AdminInput = { name: string; email: string; password: string };
+
 export type Paged<T> = { items: T[]; page: number; limit: number; total: number; pages: number };
 
 export type DoctorRef = { _id: string; name: string; specialization: Specialization; hospital: string };

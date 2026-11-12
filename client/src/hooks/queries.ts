@@ -3,6 +3,8 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, qs } from "@/lib/api";
 import type {
+  AdminInput,
+  AdminUser,
   DoctorDetail,
   DoctorInput,
   DoctorRef,
@@ -20,6 +22,7 @@ type Params = Record<string, string | number | undefined>;
 
 export const keys = {
   me: ["me"] as const,
+  admins: ["admins"] as const,
   doctors: (p?: Params) => (p ? (["doctors", "list", p] as const) : (["doctors"] as const)),
   doctor: (id: string) => ["doctors", "detail", id] as const,
   doctorLookup: (q: string) => ["doctors", "lookup", q] as const,
@@ -30,6 +33,25 @@ export const keys = {
 
 export const useMe = () =>
   useQuery({ queryKey: keys.me, queryFn: () => api<{ user: User }>("/auth/me").then((r) => r.user), staleTime: 5 * 60_000 });
+
+export const useAdmins = (enabled = true) =>
+  useQuery({ queryKey: keys.admins, queryFn: () => api<{ items: AdminUser[] }>("/admins").then((r) => r.items), enabled });
+
+export function useAddAdmin() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: AdminInput) => api<AdminUser>("/admins", { method: "POST", json: data }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: keys.admins }),
+  });
+}
+
+export function useDeleteAdmin() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => api<void>(`/admins/${id}`, { method: "DELETE" }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: keys.admins }),
+  });
+}
 
 export type OverviewParams = { range?: Range; from?: string; to?: string };
 
