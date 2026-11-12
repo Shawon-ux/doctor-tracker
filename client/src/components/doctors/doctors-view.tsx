@@ -22,6 +22,7 @@ import { Avatar, SortHeader, td, th } from "@/components/ui/table";
 import { SPECIALIZATIONS } from "@/lib/constants";
 import { fmtDate, fmtNumber } from "@/lib/format";
 import { cn } from "@/lib/cn";
+import { doctorPhotoUrl } from "@/lib/photo";
 import type { DoctorRow, Specialization } from "@/lib/types";
 import dynamic from "next/dynamic";
 
@@ -139,7 +140,7 @@ export function DoctorsView() {
                   <tr key={d._id} className="group cursor-pointer hover:bg-surface-2/70" onClick={() => router.push(`/doctors/${d._id}`)}>
                     <td className={td}>
                       <div className="flex items-center gap-3">
-                        <Avatar name={d.name} />
+                        <Avatar name={d.name} src={doctorPhotoUrl(d)} />
                         <div className="min-w-0">
                           <Link href={`/doctors/${d._id}`} onClick={(e) => e.stopPropagation()} className="block truncate font-medium hover:underline">
                             {d.name}
@@ -167,7 +168,7 @@ export function DoctorsView() {
             <ul className="divide-y divide-line md:hidden">
               {data.items.map((d) => (
                 <li key={d._id} className="flex items-center gap-3 px-4 py-3">
-                  <Avatar name={d.name} />
+                  <Avatar name={d.name} src={doctorPhotoUrl(d)} />
                   <Link href={`/doctors/${d._id}`} className="min-w-0 flex-1">
                     <p className="truncate font-medium">{d.name}</p>
                     <p className="truncate text-sm text-muted">

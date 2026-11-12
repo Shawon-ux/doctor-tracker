@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutGrid, LogOut, Search, Stethoscope, UserPlus, Users } from "lucide-react";
+import { LayoutGrid, LogOut, Search, ShieldCheck, Stethoscope, Users } from "lucide-react";
 import { useCallback, useState, type ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import { useLogout, useMe } from "@/hooks/queries";
@@ -71,39 +71,41 @@ export function AppShell({ children }: { children: ReactNode }) {
             );
           })}
         </nav>
-        <div className="mt-auto border-t border-line p-3">
+        <div className="mt-auto flex flex-col gap-3 border-t border-line p-3">
           {me?.role === "admin" && (
             <Link
               href="/admins"
               aria-current={isActive(path, "/admins") ? "page" : undefined}
               className={cn(
-                "mb-2 flex items-center gap-3 rounded-lg px-3 py-2 text-base",
+                "flex items-center gap-3 rounded-lg px-3 py-2 text-base",
                 isActive(path, "/admins") ? "bg-pine-soft font-medium text-ink" : "text-muted hover:bg-surface-2 hover:text-ink",
               )}
             >
-              <UserPlus size={18} strokeWidth={isActive(path, "/admins") ? 2.2 : 1.8} />
-              Add Admin
+              <ShieldCheck size={18} strokeWidth={isActive(path, "/admins") ? 2.2 : 1.8} />
+              Admin Suite
             </Link>
           )}
-          <div className="flex items-center gap-2.5 rounded-lg px-2 py-2">
-            <span className="flex size-8 items-center justify-center rounded-full bg-surface-2 text-xs font-semibold text-muted">
+          <div className="flex items-center gap-3 rounded-xl border border-line bg-surface-2/60 p-2.5">
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-pine-soft text-xs font-semibold text-pine">
               {me ? initials(me.name) : ""}
             </span>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium">{me?.name ?? " "}</p>
-              <p className="truncate text-xs text-muted">{me?.email ?? " "}</p>
+              <p className="truncate text-sm font-medium leading-tight">{me?.name ?? " "}</p>
+              <p className="truncate text-xs leading-tight text-muted" title={me?.email}>
+                {me?.email ?? " "}
+              </p>
               {me?.role === "viewer" && (
-                <span className="mt-1 inline-block rounded bg-surface-2 px-1.5 py-0.5 text-xs text-muted" title="You can browse everything but not make changes">
+                <span className="mt-1 inline-block rounded bg-surface px-1.5 py-0.5 text-xs text-muted" title="You can browse everything but not make changes">
                   View only
                 </span>
               )}
             </div>
           </div>
-          <div className="mt-1 flex gap-1">
+          <div className="flex items-center justify-between gap-2 px-1">
             <button
               onClick={() => logout.mutate()}
               disabled={logout.isPending}
-              className="flex flex-1 items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-muted hover:bg-surface-2 hover:text-ink"
+              className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-muted hover:bg-surface-2 hover:text-ink"
             >
               <LogOut size={16} /> Sign Out
             </button>
@@ -123,8 +125,8 @@ export function AppShell({ children }: { children: ReactNode }) {
             <Search size={18} />
           </button>
           {me?.role === "admin" && (
-            <Link href="/admins" aria-label="Add Admin" className="inline-flex size-9 items-center justify-center rounded-lg text-muted">
-              <UserPlus size={18} />
+            <Link href="/admins" aria-label="Admin Suite" className="inline-flex size-9 items-center justify-center rounded-lg text-muted">
+              <ShieldCheck size={18} />
             </Link>
           )}
           <ThemeToggle className="inline-flex size-9 items-center justify-center rounded-lg text-muted" />

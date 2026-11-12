@@ -10,6 +10,9 @@ const doctorSchema = new Schema(
     phone: { type: String, required: true, trim: true },
     email: { type: String, required: true, lowercase: true, trim: true },
     keywords: { type: [String], select: false },
+    // Optional profile photo. The bytes are never loaded with lists; photoAt tells clients one exists.
+    photo: { type: { data: Buffer, contentType: String }, select: false },
+    photoAt: Date,
   },
   { timestamps: true },
 );

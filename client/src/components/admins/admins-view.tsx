@@ -44,7 +44,7 @@ export function AdminsView() {
   return (
     <>
       <PageHeader
-        title="Add Admin"
+        title="Admin Suite"
         actions={
           <Button variant="primary" onClick={() => setAdding(true)}>
             <Plus size={16} /> Add Admin

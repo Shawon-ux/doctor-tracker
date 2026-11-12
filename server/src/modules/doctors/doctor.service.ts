@@ -113,3 +113,30 @@ export async function assertDoctorExists(id: string | Types.ObjectId) {
 export async function getDoctorOr404(id: string) {
   if (!(await Doctor.exists({ _id: id }))) throw notFound('Doctor');
 }
+
+const JPEG_MAGIC = [0xff, 0xd8, 0xff];
+
+export async function setDoctorPhoto(id: string, data: unknown) {
+  if (!Buffer.isBuffer(data) || data.length === 0) {
+    throw new HttpError(400, 'validation_error', 'Send a JPEG image', { photo: ['Send a JPEG image'] });
+  }
+  if (!JPEG_MAGIC.every((b, i) => data[i] === b)) {
+    throw new HttpError(400, 'validation_error', 'Only JPEG images are accepted', { photo: ['Only JPEG images are accepted'] });
+  }
+  const photoAt = new Date();
+  const res = await Doctor.updateOne({ _id: id }, { $set: { photo: { data, contentType: 'image/jpeg' }, photoAt } });
+  if (!res.matchedCount) throw notFound('Doctor');
+  return { photoAt };
+}
+
+export async function removeDoctorPhoto(id: string) {
+  const res = await Doctor.updateOne({ _id: id }, { $unset: { photo: 1, photoAt: 1 } });
+  if (!res.matchedCount) throw notFound('Doctor');
+}
+
+export async function getDoctorPhoto(id: string) {
+  const doc = await Doctor.findById(id).select('+photo').lean();
+  if (!doc) throw notFound('Doctor');
+  if (!doc.photo?.data) throw notFound('Photo');
+  return { data: Buffer.from(doc.photo.data.buffer), contentType: doc.photo.contentType ?? 'image/jpeg' };
+}

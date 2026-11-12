@@ -20,6 +20,8 @@ export type Doctor = {
   hospital: string;
   phone: string;
   email: string;
+  /** Set only when the doctor has a photo. */
+  photoAt?: string;
   createdAt: string;
   updatedAt: string;
 };

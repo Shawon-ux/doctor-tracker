@@ -115,6 +115,18 @@ export function useSaveDoctor() {
   });
 }
 
+/** Optional photo: a JPEG blob uploads it, null removes it. */
+export function useDoctorPhoto() {
+  const invalidate = useInvalidate();
+  return useMutation({
+    mutationFn: async ({ id, blob }: { id: string; blob: Blob | null }) => {
+      if (blob) await api<{ photoAt: string }>(`/doctors/${id}/photo`, { method: "PUT", body: blob, headers: { "content-type": "image/jpeg" } });
+      else await api<void>(`/doctors/${id}/photo`, { method: "DELETE" });
+    },
+    onSuccess: invalidate,
+  });
+}
+
 export function useDeleteDoctor() {
   const qc = useQueryClient();
   const invalidate = useInvalidate();

@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import express, { Router } from 'express';
 import { z } from 'zod';
 import { parse } from '../../middleware/validate.js';
 import { idParams, objectId } from '../../lib/validators.js';
@@ -36,6 +36,24 @@ doctorRouter.patch('/:id', async (req, res) => {
 
 doctorRouter.delete('/:id', async (req, res) => {
   await svc.deleteDoctor(parse(idParams, req.params).id);
+  res.status(204).end();
+});
+
+// Optional profile photo: a small client-resized JPEG sent as the raw request body.
+doctorRouter.get('/:id/photo', async (req, res) => {
+  const photo = await svc.getDoctorPhoto(parse(idParams, req.params).id);
+  // The client adds ?v=<photoAt>, so a changed photo always gets a new URL.
+  res.set({ 'Content-Type': photo.contentType, 'Cache-Control': 'private, max-age=31536000, immutable' });
+  res.send(photo.data);
+});
+
+doctorRouter.put('/:id/photo', express.raw({ type: 'image/jpeg', limit: '300kb' }), async (req, res) => {
+  const { id } = parse(idParams, req.params);
+  res.json(await svc.setDoctorPhoto(id, req.body));
+});
+
+doctorRouter.delete('/:id/photo', async (req, res) => {
+  await svc.removeDoctorPhoto(parse(idParams, req.params).id);
   res.status(204).end();
 });
 

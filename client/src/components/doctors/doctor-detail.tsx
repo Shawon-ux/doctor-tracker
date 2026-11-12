@@ -14,6 +14,7 @@ import { useMinDelay } from "@/hooks/use-min-delay";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ConfirmDialog } from "@/components/ui/confirm";
 import { Avatar } from "@/components/ui/table";
+import { doctorPhotoUrl } from "@/lib/photo";
 import { PatientsPanel } from "@/components/patients/patients-panel";
 import { CONDITIONS, CONDITION_META } from "@/lib/constants";
 import { fmtDate, fmtNumber } from "@/lib/format";
@@ -63,9 +64,7 @@ export function DoctorDetail() {
         <section className="mb-6 animate-[fade_240ms_ease-out] rounded-xl border border-line bg-surface">
           <div className="flex flex-wrap items-start justify-between gap-4 p-5">
             <div className="flex min-w-0 items-center gap-4">
-              <div className="scale-125">
-                <Avatar name={d.name} />
-              </div>
+              <Avatar name={d.name} src={doctorPhotoUrl(d)} size="lg" />
               <div className="min-w-0">
                 <h1 className="truncate text-xl font-semibold tracking-tight">{d.name}</h1>
                 <p className="text-muted">
