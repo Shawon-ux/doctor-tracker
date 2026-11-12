@@ -115,6 +115,7 @@ Environment variables are documented in `server/.env.example` and `client/.env.e
 - [Setup guide](SETUP.md)
 - [Architecture, API, security and testing](docs/ARCHITECTURE.md)
 - [Database query plans](docs/query-plans.md)
+- [Deployment: Render + Vercel](docs/DEPLOYMENT.md)
 
 ## License
 

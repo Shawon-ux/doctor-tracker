@@ -13,7 +13,8 @@ const schema = z.object({
   CLIENT_ORIGIN: z
     .string()
     .default('http://localhost:3000')
-    .transform((v) => v.split(',').map((s) => s.trim()).filter(Boolean)),
+    // Browsers send origins without a trailing slash, so "https://app.vercel.app/" would never match.
+    .transform((v) => v.split(',').map((s) => s.trim().replace(/\/+$/, '')).filter(Boolean)),
   TRUST_PROXY: z.coerce.number().int().min(0).default(1),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
 });

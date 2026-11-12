@@ -1,0 +1,19 @@
+# Render Blueprint for the API only. The web client is deployed on Vercel (see docs/DEPLOYMENT.md).
+services:
+  - type: web
+    name: doctor-tracker-api
+    runtime: docker
+    dockerfilePath: ./server/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI # MongoDB Atlas connection string
+        sync: false
+      - key: JWT_SECRET # 32+ chars; must equal the JWT_SECRET set on Vercel
+        sync: false
+      - key: CLIENT_ORIGIN # your Vercel URL, e.g. https://doctor-tracker.vercel.app
+        sync: false
+      - key: TRUST_PROXY # Vercel -> Render is two proxy hops
+        value: "2"

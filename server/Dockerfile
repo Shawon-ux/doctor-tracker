@@ -15,5 +15,5 @@ RUN npm ci -w server --omit=dev && npm cache clean --force
 COPY --from=build /app/server/dist server/dist
 USER node
 EXPOSE 4000
-HEALTHCHECK CMD wget -qO- http://127.0.0.1:4000/health || exit 1
+HEALTHCHECK CMD wget -qO- http://127.0.0.1:${PORT:-4000}/health || exit 1
 CMD ["node", "server/dist/index.js"]

@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
-const API_URL = process.env.API_URL ?? "http://localhost:4000";
+// Trailing slashes are stripped so "https://api.onrender.com/" does not become a double-slash path.
+const API_URL = (process.env.API_URL ?? "http://localhost:4000").trim().replace(/\/+$/, "");
 
 const securityHeaders = [
   { key: "X-Frame-Options", value: "DENY" },
