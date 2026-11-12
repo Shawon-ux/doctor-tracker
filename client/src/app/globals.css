@@ -99,11 +99,11 @@
   --color-danger-soft: var(--danger-soft);
   --font-sans: var(--font-onest), ui-sans-serif, system-ui, sans-serif;
 
-  --text-xs: 0.75rem;
-  --text-sm: 0.8125rem;
-  --text-base: 0.875rem;
-  --text-md: 1rem;
-  --text-lg: 1.25rem;
+  --text-xs: 0.8125rem;
+  --text-sm: 0.875rem;
+  --text-base: 0.9375rem;
+  --text-md: 1.0625rem;
+  --text-lg: 1.3125rem;
   --text-xl: 1.75rem;
   --text-2xl: 2.5rem;
 }
