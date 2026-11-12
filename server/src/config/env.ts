@@ -8,6 +8,8 @@ const schema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   PORT: z.coerce.number().int().positive().default(4000),
   MONGODB_URI: z.string().min(1),
+  // Used when the URI has no database name, so data never lands in MongoDB's default "test" database.
+  DB_NAME: z.string().min(1).default('doctor-tracker'),
   JWT_SECRET: z.string().min(32, 'JWT_SECRET must be at least 32 characters'),
   JWT_TTL_HOURS: z.coerce.number().positive().max(24 * 7).default(8),
   CLIENT_ORIGIN: z
